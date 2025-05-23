@@ -5,20 +5,22 @@ import User from "../models/User.js";
 export const clerkWebhooks = async (req, res) => {
     try {
 
-        // Create a Svix instance with clerk webhook secret.
-        const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
+         // Create a Svix instance with clerk webhook secret.
+         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
 
-        // Verifying Headers
+
+         // Verifying Headers
         await whook.verify(JSON.stringify(req.body), {
             "svix-id": req.headers["svix-id"],
             "svix-timestamp": req.headers["svix-timestamp"],
             "svix-signature": req.headers["svix-signature"]
-        })
+        })  
+        
+        
+         // Getting Data from request body
+         const { data, type } = req.body
 
-        // Getting Data from request body
-        const { data, type } = req.body
-
-        // Switch Cases for differernt Events
+         // Switch Cases for differernt Events
         switch (type) {
             case 'user.created': {
 
@@ -54,7 +56,11 @@ export const clerkWebhooks = async (req, res) => {
                 break;
         }
 
-    } catch (error) {
-        res.json({ success: false, message: error.message })
+        
+
+    } catch (error){
+        console.log(error.message)
+        res.json({ success: false, message:'webhooks Error' })
+
     }
 }

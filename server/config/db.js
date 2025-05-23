@@ -6,6 +6,4 @@ const connectDB = async () => {
     await mongoose.connect(`${process.env.MONGODB_URI}/Hire me`)
     
 }
-
-export default connectDB
-
+ export default connectDB
